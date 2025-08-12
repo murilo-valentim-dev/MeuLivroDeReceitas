@@ -2,6 +2,8 @@
 using FluentAssertions;
 using MyRecipeBook.Aplication.UseCases.User.Registrar;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Exceptions;
+using Shouldly;
 
 namespace Validators.Test.User.Register
 {
@@ -16,7 +18,44 @@ namespace Validators.Test.User.Register
 
             var result = validator.Validate(request);
 
-            result.IsValid.Should().BeTrue();
+            //SHOULDLY
+            result.IsValid.ShouldBeTrue();
+            ////FLUENT ASSERTIONS
+            //result.IsValid.Should().BeTrue();
         }
+
+        [Fact]
+        public void Error_Name_Empty()
+        {
+            var validator = new RegisterUserValidator();
+
+            var request = RequestRegisterUserJsonBuilder.Build();
+            request.Name = string.Empty;
+
+            var result = validator.Validate(request);
+
+            //SHOULDLY
+            result.IsValid.ShouldBeFalse();
+            result.Errors.ShouldSatisfyAllConditions(errors => errors.ShouldHaveSingleItem(),
+                                                     errors => errors.ShouldContain(e => e.ErrorMessage.Equals(ResourceMassagesException.NAME_EMPTY)));
+        }
+
+        [Fact]
+        public void Error_Email_Empty()
+        {
+            var validator = new RegisterUserValidator();
+
+            var request = RequestRegisterUserJsonBuilder.Build();
+            request.Email = string.Empty;
+
+            var result = validator.Validate(request);
+
+            //SHOULDLY
+            result.IsValid.ShouldBeFalse();
+            result.Errors.ShouldSatisfyAllConditions(errors => errors.ShouldHaveSingleItem(),
+                                                     errors => errors.ShouldContain(e => e.ErrorMessage.Equals(ResourceMassagesException.EMAIL_EMPTY)));
+        }
+
+
     }
 }
