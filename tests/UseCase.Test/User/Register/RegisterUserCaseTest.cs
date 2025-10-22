@@ -4,10 +4,8 @@ using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using FluentAssertions;
 using MyRecipeBook.Aplication.UseCases.User.Registrar;
-using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
-using System.Threading.Tasks;
 
 namespace UseCase.Test.User.Register
 {
