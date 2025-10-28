@@ -65,10 +65,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          $scanner = "${{ runner.temp }}\scanner\dotnet-sonarscanner"
+          $scanner = "${{ runner.temp }}\scanner\dotnet-sonarscanner.exe"
 
           # Inicia análise SonarCloud
-          $scanner begin `
+          & $scanner begin `
             /k:"murilo-valentim-dev_MeuLivroDeReceitas" `
             /o:"murilo-valentim-dev" `
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
@@ -84,4 +84,4 @@ jobs:
             /p:CoverletOutput=TestResults\coverage.cobertura.xml
 
           # Finaliza análise SonarCloud
-          $scanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          & $scanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
