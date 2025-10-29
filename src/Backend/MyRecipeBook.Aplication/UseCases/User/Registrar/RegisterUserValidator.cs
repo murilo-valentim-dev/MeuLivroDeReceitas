@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Exceptions;
 
 namespace MyRecipeBook.Aplication.UseCases.User.Registrar
@@ -11,7 +12,7 @@ namespace MyRecipeBook.Aplication.UseCases.User.Registrar
             RuleFor(user => user.Name).NotEmpty().WithMessage(ResourceMassagesException.NAME_EMPTY);
             RuleFor(user => user.Email).NotEmpty().WithMessage(ResourceMassagesException.EMAIL_EMPTY);
             RuleFor(user => user.Password.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMassagesException.PASSWORD_EMPTY);
-            When(user => string.IsNullOrEmpty(user.Email) == false, () =>
+            When(user => user.Email.NotEmpty(), () =>
             {
                 RuleFor(user => user.Email).EmailAddress().WithMessage(ResourceMassagesException.EMAIL_INVALID);
             });

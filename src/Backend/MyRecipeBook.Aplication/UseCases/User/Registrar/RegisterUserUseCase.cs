@@ -4,10 +4,10 @@ using MyRecipeBook.Exceptions.ExceptionsBase;
 using MyRecipeBook.Aplication.Services.AutoMapper;
 using MyRecipeBook.Aplication.Services.Cryptography;
 using MyRecipeBook.Domain.Repositories.User;
-//using MyRecipeBook.Exceptions.ExceptionsBase;
 using AutoMapper;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Exceptions;
+using MyRecipeBook.Domain.Extensions;
 
 
 namespace MyRecipeBook.Aplication.UseCases.User.Registrar
@@ -60,7 +60,7 @@ namespace MyRecipeBook.Aplication.UseCases.User.Registrar
                 result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMassagesException.EMAIL_ALREADY_REGISTRED));
             
 
-            if (result.IsValid == false)
+            if (result.IsValid.IsFalse())
             {
                 var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
 
