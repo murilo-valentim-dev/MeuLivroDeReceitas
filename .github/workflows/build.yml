@@ -63,25 +63,25 @@ jobs:
       - name: Build, Test and SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
+        shell: pwsh
         run: |
-            $scanner = "${{ runner.temp }}\scanner\dotnet-sonarscanner.exe"
-
-            
-            & $scanner begin `
-              /k:"murilo-valentim-dev_MeuLivroDeReceitas" `
-              /o:"murilo-valentim-dev" `
-              /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
-              /d:sonar.coverageReportPaths="**/coverage.cobertura.xml"
-        
-            
-            dotnet build --no-restore --configuration Release
-        
-           
-            dotnet test --no-build --configuration Release `
-              /p:CollectCoverage=true `
-              /p:CoverletOutputFormat=cobertura `
-              /p:CoverletOutput=TestResults/coverage.cobertura.xml
-        
-            
-            & $scanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          $scanner = "${{ runner.temp }}/scanner/dotnet-sonarscanner.exe"
+      
+          # Inicia análise SonarCloud
+          & $scanner begin `
+            /k:"murilo-valentim-dev_MeuLivroDeReceitas" `
+            /o:"murilo-valentim-dev" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.coverageReportPaths="**/coverage.cobertura.xml"
+      
+          # Build da solução
+          dotnet build --no-restore --configuration Release
+      
+          # Executa testes com cobertura
+          dotnet test --no-build --configuration Release `
+            /p:CollectCoverage=true `
+            /p:CoverletOutputFormat=cobertura `
+            /p:CoverletOutput=./TestResults/coverage.cobertura.xml
+      
+          # Finaliza análise SonarCloud
+          & $scanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
